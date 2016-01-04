@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ca.co.rufus.androidboilerplate.ui.DebugDrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/debug_drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <FrameLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <FrameLayout
+        android:layout_width="290dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="#e222"
+        android:fitsSystemWindows="true">
+
+        <ScrollView
+            android:id="@+id/debug_drawer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:fitsSystemWindows="true" />
+    </FrameLayout>
+</ca.co.rufus.androidboilerplate.ui.DebugDrawerLayout>

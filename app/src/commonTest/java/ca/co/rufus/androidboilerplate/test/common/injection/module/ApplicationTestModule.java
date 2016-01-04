@@ -6,6 +6,7 @@ import com.squareup.otto.Bus;
 
 import javax.inject.Singleton;
 
+import ca.co.rufus.androidboilerplate.ui.base.AppContainer;
 import dagger.Module;
 import dagger.Provides;
 import ca.co.rufus.androidboilerplate.data.DataManager;
@@ -44,5 +45,11 @@ public class ApplicationTestModule {
     @Singleton
     Bus provideEventBus() {
         return new Bus();
+    }
+
+    @Provides
+    @Singleton
+    AppContainer provideAppContainer() {
+        return AppContainer.DEFAULT;
     }
 }

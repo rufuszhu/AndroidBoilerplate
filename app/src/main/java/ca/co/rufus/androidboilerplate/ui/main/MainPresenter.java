@@ -43,8 +43,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                 .compose(SchedulerAppliers.<List<Ribot>>defaultSchedulers(getContext()))
                 .subscribe(new Subscriber<List<Ribot>>() {
                     @Override
-                    public void onCompleted() {
-                    }
+                    public void onCompleted() { }
 
                     @Override
                     public void onError(Throwable e) {
