@@ -6,7 +6,7 @@ import com.squareup.otto.Bus;
 
 import javax.inject.Singleton;
 
-import ca.co.rufus.androidboilerplate.injection.AppContainerModule;
+import ca.co.rufus.androidboilerplate.injection.DebugUiModule;
 import ca.co.rufus.androidboilerplate.ui.base.AppContainer;
 import dagger.Component;
 import ca.co.rufus.androidboilerplate.data.DataManager;
@@ -17,7 +17,7 @@ import ca.co.rufus.androidboilerplate.ui.main.MainPresenter;
 import ca.co.rufus.androidboilerplate.util.SchedulerApplier;
 
 @Singleton
-@Component(modules = {ApplicationModule.class, DefaultSchedulersModule.class, AppContainerModule.class})
+@Component(modules = {ApplicationModule.class, DefaultSchedulersModule.class, DebugUiModule.class})
 public interface ApplicationComponent {
 
     void inject(SyncService syncService);

@@ -2,12 +2,18 @@ apply plugin: 'com.android.application'
 apply from: '../config/quality/quality.gradle'
 apply plugin: 'com.github.triplet.play'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
 //TODO uncomment line below after adding fabric api secret and key to fabric.properties
 //apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 23
     buildToolsVersion '23.0.2'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
         applicationId 'ca.co.rufus.androidboilerplate'
@@ -106,6 +112,7 @@ dependencies {
     compile "com.squareup.retrofit:adapter-rxjava:$RETROFIT_VERSION"
     compile 'com.squareup:otto:1.3.8'
     compile 'io.reactivex:rxandroid:1.0.1'
+    compile 'com.f2prateek.rx.preferences:rx-preferences:1.0.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.jakewharton.timber:timber:4.1.0'
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
@@ -119,6 +126,9 @@ dependencies {
     compile 'com.facebook.stetho:stetho:1.2.0'
     compile 'com.facebook.stetho:stetho-okhttp:1.2.0'
     compile 'com.squareup.okhttp:logging-interceptor:2.6.0'
+
+    //scalpel
+    debugCompile 'com.jakewharton.scalpel:scalpel:1.1.2'
 
     // Instrumentation test dependencies
     androidTestCompile jUnit

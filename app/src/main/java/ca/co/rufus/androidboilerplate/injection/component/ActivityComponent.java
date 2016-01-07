@@ -1,6 +1,5 @@
 package ca.co.rufus.androidboilerplate.injection.component;
 
-import ca.co.rufus.androidboilerplate.injection.AppContainerModule;
 import dagger.Component;
 import ca.co.rufus.androidboilerplate.injection.module.PresentersModule;
 import ca.co.rufus.androidboilerplate.injection.scope.PerActivity;

@@ -17,7 +17,7 @@ import dagger.Provides;
  * anywhere in the app.
  */
 @Module
-public class AppContainerModule {
+public class DebugUiModule {
 
     @Provides
     @Singleton
