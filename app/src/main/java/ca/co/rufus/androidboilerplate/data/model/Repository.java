@@ -3,11 +3,15 @@ package ca.co.rufus.androidboilerplate.data.model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import org.threeten.bp.Instant;
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Table;
 
-import static com.jakewharton.u2020.util.Preconditions.checkNotNull;
+import java.util.Date;
 
-public final class Repository {
+import static ca.co.rufus.androidboilerplate.util.Preconditions.checkNotNull;
+
+@Table(name = "Repositories")
+public final class Repository extends Model {
   @NonNull public final String name;
   @NonNull public final User owner;
   @Nullable public final String description;
@@ -17,7 +21,8 @@ public final class Repository {
 
   public final String html_url;
 
-  public final Instant updated_at;
+  //TODO:change to Joda time
+  public final Date updated_at;
 
   private Repository(Builder builder) {
     this.name = checkNotNull(builder.name, "name == null");
@@ -48,7 +53,7 @@ public final class Repository {
     private long stars;
     private long forks;
     private String htmlUrl;
-    private Instant updatedAt;
+    private Date updatedAt;
 
     public Builder name(String name) {
       this.name = name;
@@ -80,7 +85,7 @@ public final class Repository {
       return this;
     }
 
-    public Builder updatedAt(Instant updatedAt) {
+    public Builder updatedAt(Date updatedAt) {
       this.updatedAt = updatedAt;
       return this;
     }

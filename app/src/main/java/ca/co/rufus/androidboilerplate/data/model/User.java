@@ -3,10 +3,13 @@ package ca.co.rufus.androidboilerplate.data.model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Table;
+
 import ca.co.rufus.androidboilerplate.util.Preconditions;
 
-
-public final class User {
+@Table(name = "Users")
+public final class User  extends Model {
   @NonNull public final String login;
   @Nullable public final String avatar_url;
 

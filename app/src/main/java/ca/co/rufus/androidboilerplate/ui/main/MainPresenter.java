@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import ca.co.rufus.androidboilerplate.data.model.Repository;
 import rx.Subscriber;
 import rx.Subscription;
 import timber.log.Timber;
@@ -39,9 +40,9 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
 
     public void loadRibots() {
         checkViewAttached();
-        mSubscription = mDataManager.getRibots()
-                .compose(SchedulerAppliers.<List<Ribot>>defaultSchedulers(getContext()))
-                .subscribe(new Subscriber<List<Ribot>>() {
+        mSubscription = mDataManager.getRepository()
+                .compose(SchedulerAppliers.<List<Repository>>defaultSchedulers(getContext()))
+                .subscribe(new Subscriber<List<Repository>>() {
                     @Override
                     public void onCompleted() { }
 
@@ -53,7 +54,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                     }
 
                     @Override
-                    public void onNext(List<Ribot> ribots) {
+                    public void onNext(List<Repository> ribots) {
                         if (ribots.isEmpty()) {
                             getMvpView().showRibotsEmpty();
                         } else {

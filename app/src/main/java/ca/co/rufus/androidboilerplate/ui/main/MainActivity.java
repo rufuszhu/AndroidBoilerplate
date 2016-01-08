@@ -16,7 +16,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.co.rufus.androidboilerplate.R;
 import ca.co.rufus.androidboilerplate.data.SyncService;
-import ca.co.rufus.androidboilerplate.data.model.Ribot;
+import ca.co.rufus.androidboilerplate.data.model.Repository;
 import ca.co.rufus.androidboilerplate.ui.base.AppContainer;
 import ca.co.rufus.androidboilerplate.ui.base.BaseActivity;
 import ca.co.rufus.androidboilerplate.util.DialogFactory;
@@ -24,7 +24,7 @@ import ca.co.rufus.androidboilerplate.util.DialogFactory;
 public class MainActivity extends BaseActivity implements MainMvpView {
 
     @Inject MainPresenter mMainPresenter;
-    private RibotsAdapter mRibotsAdapter;
+    private GithubRepoAdapter mGithubRepoAdapter;
     @Inject
     AppContainer appContainer;
 
@@ -40,8 +40,8 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         ButterKnife.bind(this, container);
 
         startService(SyncService.getStartIntent(this));
-        mRibotsAdapter = new RibotsAdapter();
-        mRecyclerView.setAdapter(mRibotsAdapter);
+        mGithubRepoAdapter = new GithubRepoAdapter(this);
+        mRecyclerView.setAdapter(mGithubRepoAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mMainPresenter.attachView(this);
         mMainPresenter.loadRibots();
@@ -50,9 +50,9 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     /***** MVP View methods implementation *****/
 
     @Override
-    public void showRibots(List<Ribot> ribots) {
-        mRibotsAdapter.setRibots(ribots);
-        mRibotsAdapter.notifyDataSetChanged();
+    public void showRibots(List<Repository> ribots) {
+        mGithubRepoAdapter.setRibots(ribots);
+        mGithubRepoAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -62,8 +62,8 @@ public class MainActivity extends BaseActivity implements MainMvpView {
 
     @Override
     public void showRibotsEmpty() {
-        mRibotsAdapter.setRibots(Collections.<Ribot>emptyList());
-        mRibotsAdapter.notifyDataSetChanged();
+        mGithubRepoAdapter.setRibots(Collections.<Repository>emptyList());
+        mGithubRepoAdapter.notifyDataSetChanged();
         Toast.makeText(this, R.string.empty_ribots, Toast.LENGTH_LONG).show();
     }
 

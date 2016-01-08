@@ -57,7 +57,7 @@ public class MainPresenterTest {
         List<Ribot> ribots = TestDataFactory.makeListRibots(10);
         doReturn(Observable.just(ribots))
                 .when(component.getDataManager())
-                .getRibots();
+                .getRepository();
 
         mMainPresenter.loadRibots();
         verify(mMockMainMvpView).showRibots(ribots);
@@ -69,7 +69,7 @@ public class MainPresenterTest {
     public void loadRibotsReturnsEmptyList() {
         doReturn(Observable.just(Collections.emptyList()))
                 .when(component.getDataManager())
-                .getRibots();
+                .getRepository();
 
         mMainPresenter.loadRibots();
         verify(mMockMainMvpView).showRibotsEmpty();
@@ -81,7 +81,7 @@ public class MainPresenterTest {
     public void loadRibotsFails() {
         doReturn(Observable.error(new RuntimeException()))
                 .when(component.getDataManager())
-                .getRibots();
+                .getRepository();
 
         mMainPresenter.loadRibots();
         verify(mMockMainMvpView).showError(anyString());

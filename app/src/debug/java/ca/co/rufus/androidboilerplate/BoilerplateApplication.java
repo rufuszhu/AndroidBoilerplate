@@ -15,7 +15,7 @@ import ca.co.rufus.androidboilerplate.injection.module.ApplicationModule;
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
-public class BoilerplateApplication extends Application {
+public class BoilerplateApplication extends com.activeandroid.app.Application {
 
     ApplicationComponent mApplicationComponent;
     DebugApplicationComponent mDebugApplicationComponent;
