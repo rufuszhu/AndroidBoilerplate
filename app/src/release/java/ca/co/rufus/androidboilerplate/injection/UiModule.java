@@ -7,7 +7,6 @@ import com.squareup.otto.Bus;
 import javax.inject.Singleton;
 
 import ca.co.rufus.androidboilerplate.data.DataManager;
-import ca.co.rufus.androidboilerplate.ui.DebugAppContainer;
 import ca.co.rufus.androidboilerplate.ui.base.AppContainer;
 import dagger.Module;
 import dagger.Provides;
@@ -17,12 +16,12 @@ import dagger.Provides;
  * anywhere in the app.
  */
 @Module
-public class DebugUiModule {
+public class UiModule {
 
     @Provides
     @Singleton
     AppContainer provideAppContainer() {
-        return new DebugAppContainer();
+        return AppContainer.DEFAULT;
     }
 
 }

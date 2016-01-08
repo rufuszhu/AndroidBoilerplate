@@ -1,5 +1,6 @@
 package ca.co.rufus.androidboilerplate.injection;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.f2prateek.rx.preferences.Preference;
@@ -8,6 +9,9 @@ import com.f2prateek.rx.preferences.RxSharedPreferences;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import ca.co.rufus.androidboilerplate.BoilerplateApplication;
+import ca.co.rufus.androidboilerplate.data.local.PreferencesHelper;
+import ca.co.rufus.androidboilerplate.injection.scope.PerDataManager;
 import ca.co.rufus.androidboilerplate.util.ApiEndpoints;
 import dagger.Module;
 import dagger.Provides;
@@ -19,10 +23,22 @@ public final class DebugDataModule {
     private static final boolean DEFAULT_SCALPEL_ENABLED = false; // No crazy 3D view tree.
     private static final boolean DEFAULT_SCALPEL_WIREFRAME_ENABLED = false; // Draw views by default.
     private static final boolean DEFAULT_SEEN_DEBUG_DRAWER = false; // Show debug drawer first time.
+    private final BoilerplateApplication app;
+
+    public DebugDataModule(BoilerplateApplication app) {
+        this.app = app;
+    }
 
     @Provides
     @Singleton
-    RxSharedPreferences provideRxSharedPreferences(SharedPreferences prefs) {
+    @Named("DebugSharePref")
+    SharedPreferences provideDebugPreferences() {
+        return app.getApplicationContext().getSharedPreferences("debug_share", Context.MODE_PRIVATE);
+    }
+
+    @Provides
+    @Singleton
+    RxSharedPreferences provideRxSharedPreferences(@Named("DebugSharePref")SharedPreferences prefs) {
         return RxSharedPreferences.create(prefs);
     }
 

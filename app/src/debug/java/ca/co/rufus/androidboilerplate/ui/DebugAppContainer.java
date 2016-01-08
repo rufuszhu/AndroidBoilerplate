@@ -18,10 +18,12 @@ import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.jakewharton.scalpel.ScalpelFrameLayout;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ca.co.rufus.androidboilerplate.BoilerplateApplication;
 import ca.co.rufus.androidboilerplate.R;
 import ca.co.rufus.androidboilerplate.injection.DaggerDebugApplicationComponent;
 import ca.co.rufus.androidboilerplate.injection.DebugApplicationComponent;
@@ -42,8 +44,15 @@ import static android.view.WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
 @Singleton
 public final class DebugAppContainer implements AppContainer {
 
-    private Preference<Boolean> scalpelEnabled;
-    private Preference<Boolean> scalpelWireframeEnabled;
+    @Inject
+    @Named("ScalpelEnabled")
+    Preference<Boolean> scalpelEnabled;
+    @Inject
+    @Named("ScalpelWireframeEnabled")
+    Preference<Boolean> scalpelWireframeEnabled;
+    @Inject
+    @Named("SeenDebugDrawer")
+    Preference<Boolean> seenDebugDrawer;
 
 
     static class ViewHolder {
@@ -55,11 +64,7 @@ public final class DebugAppContainer implements AppContainer {
         ScalpelFrameLayout content;
     }
 
-    @Inject
     public DebugAppContainer() {
-        DebugApplicationComponent debugApplicationComponent = DaggerDebugApplicationComponent.builder().build();
-
-
     }
 
     @Override
@@ -68,7 +73,7 @@ public final class DebugAppContainer implements AppContainer {
 
         final ViewHolder viewHolder = new ViewHolder();
         ButterKnife.bind(viewHolder, activity);
-
+        BoilerplateApplication.get(activity).getDebugComponent().inject(this);
 
         final Context drawerContext = new ContextThemeWrapper(activity, R.style.Theme_U2020_Debug);
         final DebugView debugView = new DebugView(drawerContext);
@@ -82,34 +87,29 @@ public final class DebugAppContainer implements AppContainer {
             }
         });
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
-        RxSharedPreferences rxPreferences = RxSharedPreferences.create(preferences);
-        scalpelEnabled = rxPreferences.getBoolean("show-whats-new", true);
-        scalpelWireframeEnabled = rxPreferences.getBoolean("show-whats-new", true);
-
-
         // If you have not seen the debug drawer before, show it with a message
-//    if (!seenDebugDrawer.get()) {
-//      viewHolder.drawerLayout.postDelayed(() -> {
-//        viewHolder.drawerLayout.openDrawer(GravityCompat.END);
-//        Toast.makeText(drawerContext, R.string.debug_drawer_welcome, Toast.LENGTH_LONG).show();
-//      }, 1000);
-//      seenDebugDrawer.set(true);
-//    }
-
-    final CompositeSubscription subscriptions = new CompositeSubscription();
-
-    setupScalpel(viewHolder, subscriptions);
-
-    final Application app = activity.getApplication();
-    app.registerActivityLifecycleCallbacks(new EmptyActivityLifecycleCallbacks() {
-      @Override public void onActivityDestroyed(Activity lifecycleActivity) {
-        if (lifecycleActivity == activity) {
-          subscriptions.unsubscribe();
-          app.unregisterActivityLifecycleCallbacks(this);
+        if (!seenDebugDrawer.get()) {
+            viewHolder.drawerLayout.postDelayed(() -> {
+                viewHolder.drawerLayout.openDrawer(GravityCompat.END);
+                Toast.makeText(drawerContext, R.string.debug_drawer_welcome, Toast.LENGTH_LONG).show();
+            }, 1000);
+            seenDebugDrawer.set(true);
         }
-      }
-    });
+
+        final CompositeSubscription subscriptions = new CompositeSubscription();
+
+        setupScalpel(viewHolder, subscriptions);
+
+        final Application app = activity.getApplication();
+        app.registerActivityLifecycleCallbacks(new EmptyActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityDestroyed(Activity lifecycleActivity) {
+                if (lifecycleActivity == activity) {
+                    subscriptions.unsubscribe();
+                    app.unregisterActivityLifecycleCallbacks(this);
+                }
+            }
+        });
 
         riseAndShine(activity);
         return viewHolder.content;

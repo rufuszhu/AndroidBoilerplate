@@ -14,6 +14,10 @@ public class PreferencesHelper {
         mPref = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
     }
 
+    public SharedPreferences getSharePreference() {
+        return mPref;
+    }
+
     public void clear() {
         mPref.edit().clear().apply();
     }

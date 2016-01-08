@@ -2,11 +2,11 @@ package ca.co.rufus.androidboilerplate.test.common.injection.module;
 
 import android.content.Context;
 
+import ca.co.rufus.androidboilerplate.data.remote.GitHubService;
 import dagger.Module;
 import dagger.Provides;
 import ca.co.rufus.androidboilerplate.data.local.DatabaseHelper;
 import ca.co.rufus.androidboilerplate.data.local.PreferencesHelper;
-import ca.co.rufus.androidboilerplate.data.remote.RibotsService;
 import ca.co.rufus.androidboilerplate.injection.scope.PerDataManager;
 
 import static org.mockito.Mockito.mock;
@@ -38,7 +38,7 @@ public class DataManagerTestModule {
 
     @Provides
     @PerDataManager
-    RibotsService provideRibotsService() {
-        return mock(RibotsService.class);
+    GitHubService provideRibotsService() {
+        return mock(GitHubService.class);
     }
 }

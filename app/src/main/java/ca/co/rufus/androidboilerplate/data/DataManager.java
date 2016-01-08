@@ -8,19 +8,19 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import ca.co.rufus.androidboilerplate.data.remote.GitHubService;
 import rx.Observable;
 import rx.functions.Func1;
 import ca.co.rufus.androidboilerplate.BoilerplateApplication;
 import ca.co.rufus.androidboilerplate.data.local.DatabaseHelper;
 import ca.co.rufus.androidboilerplate.data.local.PreferencesHelper;
 import ca.co.rufus.androidboilerplate.data.model.Ribot;
-import ca.co.rufus.androidboilerplate.data.remote.RibotsService;
 import ca.co.rufus.androidboilerplate.injection.component.DaggerDataManagerComponent;
 import ca.co.rufus.androidboilerplate.injection.module.DataManagerModule;
 
 public class DataManager {
 
-    @Inject protected RibotsService mRibotsService;
+    @Inject protected GitHubService mGitHubService;
     @Inject protected DatabaseHelper mDatabaseHelper;
     @Inject protected PreferencesHelper mPreferencesHelper;
     @Inject protected Bus mBus;
@@ -42,7 +42,7 @@ public class DataManager {
     }
 
     public Observable<Ribot> syncRibots() {
-        return mRibotsService.getRibots()
+        return mGitHubService.getRibots()
                 .concatMap(new Func1<List<Ribot>, Observable<Ribot>>() {
                     @Override
                     public Observable<Ribot> call(List<Ribot> ribots) {

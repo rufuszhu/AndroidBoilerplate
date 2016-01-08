@@ -9,7 +9,7 @@ import org.junit.runners.model.Statement;
 import ca.co.rufus.androidboilerplate.BoilerplateApplication;
 import ca.co.rufus.androidboilerplate.data.local.DatabaseHelper;
 import ca.co.rufus.androidboilerplate.data.local.PreferencesHelper;
-import ca.co.rufus.androidboilerplate.data.remote.RibotsService;
+import ca.co.rufus.androidboilerplate.data.remote.GitHubService;
 import ca.co.rufus.androidboilerplate.test.common.TestDataManager;
 import ca.co.rufus.androidboilerplate.test.common.injection.component.DaggerTestComponent;
 import ca.co.rufus.androidboilerplate.test.common.injection.component.TestComponent;
@@ -60,7 +60,7 @@ public class TestComponentRule implements TestRule {
         return (TestDataManager) mTestComponent.dataManager();
     }
 
-    public RibotsService getMockRibotsService() {
+    public GitHubService getMockRibotsService() {
         return getDataManager().getRibotsService();
     }
 

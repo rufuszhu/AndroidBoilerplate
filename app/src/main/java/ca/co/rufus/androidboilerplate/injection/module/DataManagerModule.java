@@ -1,12 +1,13 @@
 package ca.co.rufus.androidboilerplate.injection.module;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
+import ca.co.rufus.androidboilerplate.data.remote.GitHubService;
 import dagger.Module;
 import dagger.Provides;
 import ca.co.rufus.androidboilerplate.data.local.DatabaseHelper;
 import ca.co.rufus.androidboilerplate.data.local.PreferencesHelper;
-import ca.co.rufus.androidboilerplate.data.remote.RibotsService;
 import ca.co.rufus.androidboilerplate.injection.scope.PerDataManager;
 
 /**
@@ -20,6 +21,7 @@ public class DataManagerModule {
     public DataManagerModule(Context context) {
         mContext = context;
     }
+
 
     @Provides
     @PerDataManager
@@ -35,7 +37,13 @@ public class DataManagerModule {
 
     @Provides
     @PerDataManager
-    RibotsService provideRibotsService() {
-        return RibotsService.Creator.newRibotsService();
+    SharedPreferences provideSharedPreferences(PreferencesHelper preferencesHelper) {
+        return preferencesHelper.getSharePreference();
+    }
+
+    @Provides
+    @PerDataManager
+    GitHubService provideRibotsService() {
+        return GitHubService.Creator.newRibotsService();
     }
 }

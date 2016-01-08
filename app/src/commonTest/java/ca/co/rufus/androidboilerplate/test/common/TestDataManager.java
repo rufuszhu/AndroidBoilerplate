@@ -5,7 +5,7 @@ import android.content.Context;
 import ca.co.rufus.androidboilerplate.BoilerplateApplication;
 import ca.co.rufus.androidboilerplate.data.DataManager;
 import ca.co.rufus.androidboilerplate.data.local.DatabaseHelper;
-import ca.co.rufus.androidboilerplate.data.remote.RibotsService;
+import ca.co.rufus.androidboilerplate.data.remote.GitHubService;
 import ca.co.rufus.androidboilerplate.test.common.injection.component.DaggerDataManagerTestComponent;
 import ca.co.rufus.androidboilerplate.test.common.injection.component.TestComponent;
 import ca.co.rufus.androidboilerplate.test.common.injection.module.DataManagerTestModule;
@@ -34,8 +34,8 @@ public class TestDataManager extends DataManager {
                 .inject(this);
     }
 
-    public RibotsService getRibotsService() {
-        return mRibotsService;
+    public GitHubService getRibotsService() {
+        return mGitHubService;
     }
 
     public DatabaseHelper getDatabaseHelper() {
