@@ -1,14 +1,26 @@
 package ca.co.rufus.androidboilerplate.injection.module;
 
-import android.content.Context;
+import android.app.Application;
 import android.content.SharedPreferences;
 
-import ca.co.rufus.androidboilerplate.data.remote.GitHubService;
+import com.f2prateek.rx.preferences.Preference;
+import com.f2prateek.rx.preferences.RxSharedPreferences;
+import com.squareup.okhttp.Cache;
+import com.squareup.okhttp.OkHttpClient;
+
+import java.io.File;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import ca.co.rufus.androidboilerplate.R;
+import ca.co.rufus.androidboilerplate.data.remote.GithubService;
 import dagger.Module;
 import dagger.Provides;
 import ca.co.rufus.androidboilerplate.data.local.DatabaseHelper;
-import ca.co.rufus.androidboilerplate.data.local.PreferencesHelper;
 import ca.co.rufus.androidboilerplate.injection.scope.PerDataManager;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Provide dependencies to the DataManager, mainly Helper classes and Retrofit services.
@@ -16,34 +28,22 @@ import ca.co.rufus.androidboilerplate.injection.scope.PerDataManager;
 @Module
 public class DataManagerModule {
 
-    private final Context mContext;
-
-    public DataManagerModule(Context context) {
-        mContext = context;
+    @Provides
+    @Singleton
+    SharedPreferences provideSharedPreferences(Application app) {
+        return app.getSharedPreferences(app.getApplicationContext().getString(R.string.app_name), MODE_PRIVATE);
     }
 
+    @Provides
+    @Singleton
+    RxSharedPreferences provideRxSharedPreferences(SharedPreferences prefs) {
+        return RxSharedPreferences.create(prefs);
+    }
 
     @Provides
     @PerDataManager
     DatabaseHelper provideDatabaseHelper() {
-        return new DatabaseHelper(mContext);
+        return new DatabaseHelper();
     }
 
-    @Provides
-    @PerDataManager
-    PreferencesHelper providePreferencesHelper() {
-        return new PreferencesHelper(mContext);
-    }
-
-    @Provides
-    @PerDataManager
-    SharedPreferences provideSharedPreferences(PreferencesHelper preferencesHelper) {
-        return preferencesHelper.getSharePreference();
-    }
-
-    @Provides
-    @PerDataManager
-    GitHubService provideRibotsService() {
-        return GitHubService.Creator.newRibotsService();
-    }
 }

@@ -13,7 +13,6 @@ import timber.log.Timber;
 import ca.co.rufus.androidboilerplate.BoilerplateApplication;
 import ca.co.rufus.androidboilerplate.R;
 import ca.co.rufus.androidboilerplate.data.DataManager;
-import ca.co.rufus.androidboilerplate.data.model.Ribot;
 import ca.co.rufus.androidboilerplate.ui.base.BasePresenter;
 import ca.co.rufus.androidboilerplate.util.SchedulerAppliers;
 

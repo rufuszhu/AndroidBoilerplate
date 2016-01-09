@@ -23,12 +23,14 @@ import ca.co.rufus.androidboilerplate.util.DialogFactory;
 
 public class MainActivity extends BaseActivity implements MainMvpView {
 
-    @Inject MainPresenter mMainPresenter;
+    @Inject
+    MainPresenter mMainPresenter;
     private GithubRepoAdapter mGithubRepoAdapter;
     @Inject
     AppContainer appContainer;
 
-    @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
+    @Bind(R.id.recycler_view)
+    RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,16 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         mMainPresenter.loadRibots();
     }
 
-    /***** MVP View methods implementation *****/
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mMainPresenter.detachView();
+    }
+
+    /*****
+     * MVP View methods implementation
+     *****/
 
     @Override
     public void showRibots(List<Repository> ribots) {

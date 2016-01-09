@@ -10,8 +10,6 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import ca.co.rufus.androidboilerplate.BoilerplateApplication;
-import ca.co.rufus.androidboilerplate.data.local.PreferencesHelper;
-import ca.co.rufus.androidboilerplate.injection.scope.PerDataManager;
 import ca.co.rufus.androidboilerplate.util.ApiEndpoints;
 import dagger.Module;
 import dagger.Provides;

@@ -9,11 +9,12 @@ import android.os.IBinder;
 
 import javax.inject.Inject;
 
+import ca.co.rufus.androidboilerplate.data.model.Repository;
 import rx.Observer;
+import rx.Subscriber;
 import rx.Subscription;
 import timber.log.Timber;
 import ca.co.rufus.androidboilerplate.BoilerplateApplication;
-import ca.co.rufus.androidboilerplate.data.model.Ribot;
 import ca.co.rufus.androidboilerplate.util.AndroidComponentUtil;
 import ca.co.rufus.androidboilerplate.util.NetworkUtil;
 import ca.co.rufus.androidboilerplate.util.SchedulerAppliers;
@@ -49,9 +50,9 @@ public class SyncService extends Service {
         }
 
         if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
-        mSubscription = mDataManager.syncRibots()
-                .compose(SchedulerAppliers.<Ribot>defaultSubscribeScheduler(this))
-                .subscribe(new Observer<Ribot>() {
+        mSubscription = mDataManager.syncRepos()
+                .compose(SchedulerAppliers.<Repository>defaultSubscribeScheduler(this))
+                .subscribe(new Subscriber<Repository>() {
                     @Override
                     public void onCompleted() {
                         Timber.i("Synced successfully!");
@@ -66,7 +67,7 @@ public class SyncService extends Service {
                     }
 
                     @Override
-                    public void onNext(Ribot ribot) {
+                    public void onNext(Repository repository) {
                     }
                 });
 

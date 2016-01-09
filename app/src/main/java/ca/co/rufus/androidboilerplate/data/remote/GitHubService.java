@@ -6,8 +6,6 @@ import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
-import java.util.List;
-
 import ca.co.rufus.androidboilerplate.data.model.RepositoriesResponse;
 import retrofit.GsonConverterFactory;
 import retrofit.Result;
@@ -16,11 +14,10 @@ import retrofit.RxJavaCallAdapterFactory;
 import retrofit.http.GET;
 import retrofit.http.Query;
 import rx.Observable;
-import ca.co.rufus.androidboilerplate.data.model.Ribot;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-public interface GitHubService {
+public interface GithubService {
 
     String ENDPOINT = "https://api.ribot.io/";
 
@@ -35,7 +32,7 @@ public interface GitHubService {
      *******/
     class Creator {
 
-        public static GitHubService newRibotsService() {
+        public static GithubService newGithubService() {
             Gson gson = new GsonBuilder()
                     .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                     .create();
@@ -52,12 +49,12 @@ public interface GitHubService {
 
 
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(GitHubService.ENDPOINT)
+                    .baseUrl(GithubService.ENDPOINT)
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .build();
-            return retrofit.create(GitHubService.class);
+            return retrofit.create(GithubService.class);
         }
     }
 }
