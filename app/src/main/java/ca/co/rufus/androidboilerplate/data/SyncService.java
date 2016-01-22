@@ -7,10 +7,15 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
 
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.temporal.ChronoUnit;
+
 import javax.inject.Inject;
 
 import ca.co.rufus.androidboilerplate.data.model.Repository;
-import rx.Observer;
+import ca.co.rufus.androidboilerplate.data.remote.Order;
+import ca.co.rufus.androidboilerplate.data.remote.SearchQuery;
+import ca.co.rufus.androidboilerplate.data.remote.Sort;
 import rx.Subscriber;
 import rx.Subscription;
 import timber.log.Timber;
@@ -21,7 +26,8 @@ import ca.co.rufus.androidboilerplate.util.SchedulerAppliers;
 
 public class SyncService extends Service {
 
-    @Inject DataManager mDataManager;
+    @Inject
+    DataManager mDataManager;
     private Subscription mSubscription;
 
     public static Intent getStartIntent(Context context) {
@@ -49,8 +55,15 @@ public class SyncService extends Service {
             return START_NOT_STICKY;
         }
 
-        if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
-        mSubscription = mDataManager.syncRepos()
+        if (mSubscription != null && !mSubscription.isUnsubscribed())
+            mSubscription.unsubscribe();
+
+
+        SearchQuery trendingQuery = new SearchQuery.Builder() //
+                .createdSince(LocalDate.now().minus(1, ChronoUnit.MONTHS)) //
+                .build();
+
+        mSubscription = mDataManager.syncRepos(trendingQuery, Sort.STARS, Order.DESC)
                 .compose(SchedulerAppliers.<Repository>defaultSubscribeScheduler(this))
                 .subscribe(new Subscriber<Repository>() {
                     @Override
@@ -63,7 +76,6 @@ public class SyncService extends Service {
                     public void onError(Throwable e) {
                         Timber.w(e, "Error syncing.");
                         stopSelf(startId);
-
                     }
 
                     @Override

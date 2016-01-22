@@ -2,11 +2,14 @@ package ca.co.rufus.androidboilerplate.injection.module;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteOpenHelper;
 
 import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite.SqlBrite;
 
 import java.io.File;
 
@@ -14,11 +17,13 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import ca.co.rufus.androidboilerplate.R;
+import ca.co.rufus.androidboilerplate.data.local.DbOpenHelper;
 import ca.co.rufus.androidboilerplate.data.remote.GithubService;
 import dagger.Module;
 import dagger.Provides;
 import ca.co.rufus.androidboilerplate.data.local.DatabaseHelper;
 import ca.co.rufus.androidboilerplate.injection.scope.PerDataManager;
+import timber.log.Timber;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -41,9 +46,31 @@ public class DataManagerModule {
     }
 
     @Provides
-    @PerDataManager
-    DatabaseHelper provideDatabaseHelper() {
-        return new DatabaseHelper();
+    @Singleton
+    SQLiteOpenHelper provideOpenHelper(Application application) {
+        return new DbOpenHelper(application);
     }
 
+    @Provides
+    @Singleton
+    SqlBrite provideSqlBrite() {
+        return SqlBrite.create(new SqlBrite.Logger() {
+            @Override
+            public void log(String message) {
+                Timber.tag("Database").v(message);
+            }
+        });
+    }
+
+    @Provides
+    @Singleton
+    BriteDatabase provideDatabase(SqlBrite sqlBrite, SQLiteOpenHelper helper) {
+        return sqlBrite.wrapDatabaseHelper(helper);
+    }
+
+    @Provides
+    @PerDataManager
+    DatabaseHelper provideDatabaseHelper(Application application) {
+        return new DatabaseHelper(application);
+    }
 }
