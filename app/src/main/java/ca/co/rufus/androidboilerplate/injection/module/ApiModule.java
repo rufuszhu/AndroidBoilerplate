@@ -1,72 +1,62 @@
 package ca.co.rufus.androidboilerplate.injection.module;
 
-import android.app.Application;
-
-import com.facebook.stetho.okhttp.StethoInterceptor;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.squareup.okhttp.Cache;
-import com.squareup.okhttp.HttpUrl;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
-import java.io.File;
-
-import javax.inject.Named;
-import javax.inject.Singleton;
-
+import ca.co.rufus.androidboilerplate.data.model.AutoValueAdapterFactory;
 import ca.co.rufus.androidboilerplate.data.remote.GithubService;
+import ca.co.rufus.androidboilerplate.injection.scope.PerDataManager;
+import dagger.Module;
 import dagger.Provides;
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Retrofit;
+import retrofit2.RxJavaCallAdapterFactory;
 
-import static com.jakewharton.byteunits.DecimalByteUnit.MEGABYTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * Created by rzhu on 1/8/2016.
  */
+@Module
 public class ApiModule {
     public static final HttpUrl PRODUCTION_API_URL = HttpUrl.parse("https://api.github.com/");
-    static final int DISK_CACHE_SIZE = (int) MEGABYTES.toBytes(50);
 
     @Provides
-    @Singleton
+    @PerDataManager
     HttpUrl provideBaseUrl() {
         return PRODUCTION_API_URL;
     }
 
     @Provides
-    @Singleton
-    OkHttpClient provideOkHttpClient(Application app) {
-        OkHttpClient client = new OkHttpClient();
-        client.setConnectTimeout(10, SECONDS);
-        client.setReadTimeout(10, SECONDS);
-        client.setWriteTimeout(10, SECONDS);
-        client.networkInterceptors().add(new StethoInterceptor());
+    @PerDataManager
+    OkHttpClient provideOkHttpClient() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         // set your desired log level
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        client.interceptors().add(logging);
-        // Install an HTTP cache in the application cache directory.
-        File cacheDir = new File(app.getCacheDir(), "http");
-        Cache cache = new Cache(cacheDir, DISK_CACHE_SIZE);
-        client.setCache(cache);
-
-        return client;
+        return new OkHttpClient.Builder()
+                .connectTimeout(10, SECONDS)
+                .readTimeout(10, SECONDS)
+                .writeTimeout(10, SECONDS)
+                .addInterceptor(logging)
+                .addInterceptor(new StethoInterceptor())
+                .build();
     }
 
     @Provides
-    @Singleton
+    @PerDataManager
     Gson provideGson() {
         return new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                .registerTypeAdapterFactory(new AutoValueAdapterFactory())
                 .create();
     }
 
     @Provides
-    @Singleton
+    @PerDataManager
     Retrofit provideRetrofit(HttpUrl baseUrl, OkHttpClient client, Gson gson) {
         return new Retrofit.Builder()
                 .client(client)
@@ -77,7 +67,7 @@ public class ApiModule {
     }
 
     @Provides
-    @Singleton
+    @PerDataManager
     GithubService provideGithubService(Retrofit retrofit) {
         return retrofit.create(GithubService.class);
     }

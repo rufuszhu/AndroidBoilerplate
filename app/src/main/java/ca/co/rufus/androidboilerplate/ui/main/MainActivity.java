@@ -7,6 +7,11 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import junit.framework.Test;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -16,10 +21,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.co.rufus.androidboilerplate.R;
 import ca.co.rufus.androidboilerplate.data.SyncService;
+import ca.co.rufus.androidboilerplate.data.model.AutoValueAdapterFactory;
+import ca.co.rufus.androidboilerplate.data.model.RepoOwnerJoin;
 import ca.co.rufus.androidboilerplate.data.model.Repository;
 import ca.co.rufus.androidboilerplate.ui.base.AppContainer;
 import ca.co.rufus.androidboilerplate.ui.base.BaseActivity;
 import ca.co.rufus.androidboilerplate.util.DialogFactory;
+import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements MainMvpView {
 
@@ -47,6 +55,18 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mMainPresenter.attachView(this);
         mMainPresenter.loadRibots();
+
+
+
+//        Gson gson = new GsonBuilder()
+//                .registerTypeAdapterFactory(new AutoValueAdapterFactory())
+//                .create();
+//        Repository inTest = Repository.create(1, 1, "a", "b", 12, 12, 12, "http", "123");
+//        Timber.i("IN: " + inTest);
+//        String json = gson.toJson(inTest);
+//        Timber.i("JSON: " + json);
+//        Test outTest = gson.fromJson(json, Repository.class);
+//        Timber.i("OUT: " + outTest);
     }
 
     @Override
@@ -61,8 +81,8 @@ public class MainActivity extends BaseActivity implements MainMvpView {
      *****/
 
     @Override
-    public void showRibots(List<Repository> ribots) {
-        mGithubRepoAdapter.setRibots(ribots);
+    public void showRibots(List<RepoOwnerJoin> repoOwnerJoins) {
+        mGithubRepoAdapter.setRepos(repoOwnerJoins);
         mGithubRepoAdapter.notifyDataSetChanged();
     }
 
@@ -73,7 +93,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
 
     @Override
     public void showRibotsEmpty() {
-        mGithubRepoAdapter.setRibots(Collections.<Repository>emptyList());
+        mGithubRepoAdapter.setRepos(Collections.<RepoOwnerJoin>emptyList());
         mGithubRepoAdapter.notifyDataSetChanged();
         Toast.makeText(this, R.string.empty_ribots, Toast.LENGTH_LONG).show();
     }

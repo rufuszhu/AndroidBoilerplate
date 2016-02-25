@@ -3,18 +3,14 @@ package ca.co.rufus.androidboilerplate.ui;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.PowerManager;
-import android.preference.PreferenceManager;
 import android.support.v4.view.GravityCompat;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-
 import com.f2prateek.rx.preferences.Preference;
-import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.jakewharton.scalpel.ScalpelFrameLayout;
 
 import javax.inject.Inject;
@@ -25,8 +21,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.co.rufus.androidboilerplate.BoilerplateApplication;
 import ca.co.rufus.androidboilerplate.R;
-import ca.co.rufus.androidboilerplate.injection.DaggerDebugApplicationComponent;
-import ca.co.rufus.androidboilerplate.injection.DebugApplicationComponent;
 import ca.co.rufus.androidboilerplate.ui.base.AppContainer;
 import ca.co.rufus.androidboilerplate.util.EmptyActivityLifecycleCallbacks;
 import rx.subscriptions.CompositeSubscription;

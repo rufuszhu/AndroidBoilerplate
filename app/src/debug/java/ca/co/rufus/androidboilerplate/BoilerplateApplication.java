@@ -6,6 +6,8 @@ import android.content.Context;
 import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import ca.co.rufus.androidboilerplate.injection.DaggerDebugApplicationComponent;
 import ca.co.rufus.androidboilerplate.injection.DebugApplicationComponent;
 import ca.co.rufus.androidboilerplate.injection.DebugDataModule;
@@ -15,7 +17,7 @@ import ca.co.rufus.androidboilerplate.injection.module.ApplicationModule;
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
-public class BoilerplateApplication extends com.activeandroid.app.Application {
+public class BoilerplateApplication extends Application {
 
     ApplicationComponent mApplicationComponent;
     DebugApplicationComponent mDebugApplicationComponent;
@@ -26,6 +28,7 @@ public class BoilerplateApplication extends com.activeandroid.app.Application {
         Fabric.with(this, new Crashlytics());
         //debug only
         Stetho.initializeWithDefaults(this);
+        JodaTimeAndroid.init(this);
         Timber.plant(new Timber.DebugTree() {
             //add line number to the tag
             @Override

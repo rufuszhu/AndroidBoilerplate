@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
 
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.temporal.ChronoUnit;
+
+import org.joda.time.LocalDate;
 
 import javax.inject.Inject;
 
@@ -60,7 +60,7 @@ public class SyncService extends Service {
 
 
         SearchQuery trendingQuery = new SearchQuery.Builder() //
-                .createdSince(LocalDate.now().minus(1, ChronoUnit.MONTHS)) //
+                .createdSince(LocalDate.now().minusMonths(1)) //
                 .build();
 
         mSubscription = mDataManager.syncRepos(trendingQuery, Sort.STARS, Order.DESC)

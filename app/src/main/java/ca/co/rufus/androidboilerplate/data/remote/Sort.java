@@ -1,9 +1,8 @@
 package ca.co.rufus.androidboilerplate.data.remote;
 
 public enum Sort {
-  STARS("watchers"),
-  FORKS("forks"),
-  UPDATED("updated");
+  STARS("stargazers_count"),
+  FORKS("forks");
 
   private final String value;
 

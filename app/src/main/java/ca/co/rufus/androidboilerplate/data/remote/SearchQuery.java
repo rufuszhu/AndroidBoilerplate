@@ -1,10 +1,13 @@
 package ca.co.rufus.androidboilerplate.data.remote;
 
-import org.threeten.bp.LocalDate;
+
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 
 import ca.co.rufus.androidboilerplate.util.Preconditions;
+import timber.log.Timber;
 
-import static org.threeten.bp.format.DateTimeFormatter.ISO_LOCAL_DATE;
 
 public final class SearchQuery {
     private final LocalDate createdSince;
@@ -16,7 +19,8 @@ public final class SearchQuery {
     @Override
     public String toString() {
         // Returning null here is not ideal, but it lets retrofit drop the query param altogether.
-        String result = createdSince == null ? null : "created:>=" + ISO_LOCAL_DATE.format(createdSince);
+        String result = createdSince == null ? null : "created:>=" + createdSince.toString(ISODateTimeFormat.date());
+        Timber.i("Create since: " + createdSince.toString(ISODateTimeFormat.date()));
         return result + " language:java";
     }
 

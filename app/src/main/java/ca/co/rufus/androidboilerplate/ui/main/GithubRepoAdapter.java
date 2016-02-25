@@ -20,13 +20,15 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ca.co.rufus.androidboilerplate.R;
+import ca.co.rufus.androidboilerplate.data.model.RepoOwnerJoin;
 import ca.co.rufus.androidboilerplate.data.model.Repository;
 import ca.co.rufus.androidboilerplate.ui.misc.Truss;
 
 public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoAdapter.RibotViewHolder> {
 
-    private List<Repository> repositories;
+    private List<RepoOwnerJoin> repositories;
     private final int descriptionColor;
+
 
     public GithubRepoAdapter(Context context) {
         repositories = new ArrayList<>();
@@ -35,7 +37,7 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoAdapter.Ri
         descriptionColor = outValue.data;
     }
 
-    public void setRibots(List<Repository> repos) {
+    public void setRepos(List<RepoOwnerJoin> repos) {
         repositories = repos;
     }
 
@@ -48,25 +50,27 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoAdapter.Ri
 
     @Override
     public void onBindViewHolder(RibotViewHolder holder, int position) {
-        Repository repository = repositories.get(position);
+        RepoOwnerJoin repoOwnerJoin = repositories.get(position);
 
-        Glide.with(holder.avatarView.getContext())
-                .load(repository.owner.avatar_url)
-                .centerCrop()
-                .crossFade()
-                .into(holder.avatarView);
 
-        holder.nameView.setText(repository.name);
-        holder.starsView.setText(String.valueOf(repository.watchers));
-        holder.forksView.setText(String.valueOf(repository.forks));
+
+//        Glide.with(holder.avatarView.getContext())
+//                .load(repository.owner().avatar_url())
+//                .centerCrop()
+//                .crossFade()
+//                .into(holder.avatarView);
+
+        holder.nameView.setText(repoOwnerJoin.name());
+        holder.starsView.setText(String.valueOf(repoOwnerJoin.star()));
+        holder.forksView.setText(String.valueOf(repoOwnerJoin.fork()));
 
         Truss description = new Truss();
-        description.append(repository.owner.login);
+//        description.append(repository.owner().login());
 
-        if (!TextUtils.isEmpty(repository.description)) {
+        if (!TextUtils.isEmpty(repoOwnerJoin.description())) {
             description.pushSpan(new ForegroundColorSpan(descriptionColor));
             description.append(" — ");
-            description.append(repository.description);
+            description.append(repoOwnerJoin.description());
             description.popSpan();
         }
 

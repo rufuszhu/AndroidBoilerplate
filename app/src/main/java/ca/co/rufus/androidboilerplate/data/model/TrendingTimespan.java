@@ -1,27 +1,24 @@
 package ca.co.rufus.androidboilerplate.data.model;
 
 
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.temporal.ChronoUnit;
-import org.threeten.bp.temporal.TemporalUnit;
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
 
 enum TrendingTimespan {
-  DAY("today", 1, ChronoUnit.DAYS),
-  WEEK("last week", 1, ChronoUnit.WEEKS),
-  MONTH("last month", 1, ChronoUnit.MONTHS);
+  DAY("today", Period.days(1)),
+  WEEK("last week",Period.weeks(1)),
+  MONTH("last month",Period.months(1));
 
   private final String name;
-  private final long duration;
-  private final TemporalUnit durationUnit;
+  private Period duration;
 
-  TrendingTimespan(String name, int duration, TemporalUnit durationUnit) {
+  TrendingTimespan(String name, Period duration) {
     this.name = name;
     this.duration = duration;
-    this.durationUnit = durationUnit;
   }
 
   public LocalDate createdSince() {
-    return LocalDate.now().minus(duration, durationUnit);
+    return LocalDate.now().minus(duration);
   }
 
   @Override public String toString() {

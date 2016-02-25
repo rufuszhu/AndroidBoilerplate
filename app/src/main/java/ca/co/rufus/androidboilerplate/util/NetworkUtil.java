@@ -4,7 +4,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import retrofit.HttpException;
+import retrofit2.HttpException;
+
 
 public class NetworkUtil {
 

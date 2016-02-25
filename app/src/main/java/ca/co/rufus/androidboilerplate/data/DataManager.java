@@ -8,19 +8,20 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import ca.co.rufus.androidboilerplate.BoilerplateApplication;
+import ca.co.rufus.androidboilerplate.data.local.DatabaseHelper;
+import ca.co.rufus.androidboilerplate.data.model.RepoOwnerJoin;
 import ca.co.rufus.androidboilerplate.data.model.RepositoriesResponse;
 import ca.co.rufus.androidboilerplate.data.model.Repository;
 import ca.co.rufus.androidboilerplate.data.remote.GithubService;
 import ca.co.rufus.androidboilerplate.data.remote.Order;
 import ca.co.rufus.androidboilerplate.data.remote.SearchQuery;
 import ca.co.rufus.androidboilerplate.data.remote.Sort;
-import retrofit.Result;
-import rx.Observable;
-import rx.functions.Func1;
-import ca.co.rufus.androidboilerplate.BoilerplateApplication;
-import ca.co.rufus.androidboilerplate.data.local.DatabaseHelper;
 import ca.co.rufus.androidboilerplate.injection.component.DaggerDataManagerComponent;
 import ca.co.rufus.androidboilerplate.injection.module.DataManagerModule;
+import retrofit2.Result;
+import rx.Observable;
+import rx.functions.Func1;
 
 public class DataManager {
 
@@ -60,8 +61,8 @@ public class DataManager {
 
     }
 
-    public Observable<List<Repository>> getRepository() {
-        return mDatabaseHelper.getReposFromDb().distinct();
+    public Observable<List<RepoOwnerJoin>> getRepository() {
+        return mDatabaseHelper.getReposJoinsFromDb().distinct();
     }
 
 }

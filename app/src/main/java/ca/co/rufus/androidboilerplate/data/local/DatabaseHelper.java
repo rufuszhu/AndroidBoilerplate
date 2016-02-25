@@ -4,19 +4,19 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.activeandroid.ActiveAndroid;
-import com.activeandroid.query.Delete;
-import com.activeandroid.query.Select;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
 import java.util.Collection;
 import java.util.List;
 
+import ca.co.rufus.androidboilerplate.data.model.Owner;
+import ca.co.rufus.androidboilerplate.data.model.RepoOwnerJoin;
 import ca.co.rufus.androidboilerplate.data.model.Repository;
-import ca.co.rufus.androidboilerplate.data.model.User;
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
 /**
  * Created by rufus on 2016-01-07.
@@ -57,18 +57,24 @@ public class DatabaseHelper {
     }
 
 
-    public Observable<Repository> setReposToDb(final Collection<Repository> newRibots) {
+    public Observable<Repository> setReposToDb(final Collection<Repository> newRepos) {
         return Observable.create(new Observable.OnSubscribe<Repository>() {
             @Override
             public void call(Subscriber<? super Repository> subscriber) {
                 BriteDatabase.Transaction transaction = mDb.newTransaction();
                 try {
-                    mDb.delete(Db.RibotProfileTable.TABLE_NAME, null);
-                    for (Ribot ribot : newRibots) {
-                        long result = mDb.insert(Db.RibotProfileTable.TABLE_NAME,
-                                Db.RibotProfileTable.toContentValues(ribot.profile),
+                    mDb.delete(Repository.TABLE, null);
+
+                    for (Repository repo : newRepos) {
+                        long result = mDb.insert(Repository.TABLE,
+                                Repository.toContentValues(repo),
                                 SQLiteDatabase.CONFLICT_REPLACE);
-                        if (result >= 0) subscriber.onNext(ribot);
+                        if (result >= 0) {
+                            mDb.insert(Owner.TABLE,
+                                    Owner.toContentValues(repo.owner()),
+                                    SQLiteDatabase.CONFLICT_REPLACE);
+                            subscriber.onNext(repo);
+                        }
                     }
                     transaction.markSuccessful();
                     subscriber.onCompleted();
@@ -79,13 +85,7 @@ public class DatabaseHelper {
         });
     }
 
-    public Observable<List<Repository>> getReposFromDb() {
-        return Observable.create(new Observable.OnSubscribe<List<Repository>>() {
-            @Override
-            public void call(Subscriber<? super List<Repository>> subscriber) {
-                subscriber.onNext((List) new Select().from(Repository.class).execute());
-                subscriber.onCompleted();
-            }
-        });
+    public Observable<List<RepoOwnerJoin>> getReposJoinsFromDb() {
+        return mDb.createQuery(RepoOwnerJoin.TABLES, RepoOwnerJoin.QUERY).mapToList(RepoOwnerJoin.MAPPER);
     }
 }
