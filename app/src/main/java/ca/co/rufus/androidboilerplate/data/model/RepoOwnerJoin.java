@@ -21,7 +21,7 @@ public abstract class RepoOwnerJoin {
     public static String QUERY = ""
             + "SELECT * "
             + " FROM " + Repository.TABLE
-            + " LEFT INNER JOIN " + Owner.TABLE + " ON " + OWNER_ID + " = " + REPO_ID
+            + " LEFT JOIN " + Owner.TABLE + " WHERE " + OWNER_ID + " = " + REPO_ID
             + " GROUP BY " + REPO_ID;
 
     public abstract long id();
