@@ -15,7 +15,7 @@ import rx.functions.Func1;
 @AutoParcel
 public abstract class RepoOwnerJoin {
     private static String OWNER_ID = Owner.TABLE + "." + Owner.ID;
-    private static String REPO_ID = Repository.TABLE + "." + Repository.ID;
+    private static String REPO_ID =  Repository.TABLE + "." + Repository.OWNER_ID;
     public static Collection<String> TABLES = Arrays.asList(Repository.TABLE, Owner.TABLE);
 
     public static String QUERY = ""

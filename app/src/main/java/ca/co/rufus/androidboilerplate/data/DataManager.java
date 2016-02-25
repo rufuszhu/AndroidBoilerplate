@@ -62,7 +62,7 @@ public class DataManager {
     }
 
     public Observable<List<RepoOwnerJoin>> getRepository() {
-        return mDatabaseHelper.getReposJoinsFromDb().distinct();
+        return mDatabaseHelper.getReposJoinsFromDb();
     }
 
 }

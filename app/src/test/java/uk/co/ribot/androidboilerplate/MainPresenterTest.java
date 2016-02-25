@@ -59,9 +59,9 @@ public class MainPresenterTest {
                 .when(component.getDataManager())
                 .getRepository();
 
-        mMainPresenter.loadRibots();
-        verify(mMockMainMvpView).showRibots(ribots);
-        verify(mMockMainMvpView, never()).showRibotsEmpty();
+        mMainPresenter.loadRepos();
+        verify(mMockMainMvpView).showRepos(ribots);
+        verify(mMockMainMvpView, never()).showReposEmpty();
         verify(mMockMainMvpView, never()).showError(anyString());
     }
 
@@ -71,9 +71,9 @@ public class MainPresenterTest {
                 .when(component.getDataManager())
                 .getRepository();
 
-        mMainPresenter.loadRibots();
-        verify(mMockMainMvpView).showRibotsEmpty();
-        verify(mMockMainMvpView, never()).showRibots(anyListOf(Ribot.class));
+        mMainPresenter.loadRepos();
+        verify(mMockMainMvpView).showReposEmpty();
+        verify(mMockMainMvpView, never()).showRepos(anyListOf(Ribot.class));
         verify(mMockMainMvpView, never()).showError(anyString());
     }
 
@@ -83,9 +83,9 @@ public class MainPresenterTest {
                 .when(component.getDataManager())
                 .getRepository();
 
-        mMainPresenter.loadRibots();
+        mMainPresenter.loadRepos();
         verify(mMockMainMvpView).showError(anyString());
-        verify(mMockMainMvpView, never()).showRibotsEmpty();
-        verify(mMockMainMvpView, never()).showRibots(anyListOf(Ribot.class));
+        verify(mMockMainMvpView, never()).showReposEmpty();
+        verify(mMockMainMvpView, never()).showRepos(anyListOf(Ribot.class));
     }
 }

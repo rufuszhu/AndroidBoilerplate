@@ -17,6 +17,7 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import timber.log.Timber;
 
 /**
  * Created by rufus on 2016-01-07.
@@ -86,6 +87,7 @@ public class DatabaseHelper {
     }
 
     public Observable<List<RepoOwnerJoin>> getReposJoinsFromDb() {
+        Timber.i(RepoOwnerJoin.QUERY);
         return mDb.createQuery(RepoOwnerJoin.TABLES, RepoOwnerJoin.QUERY).mapToList(RepoOwnerJoin.MAPPER);
     }
 }

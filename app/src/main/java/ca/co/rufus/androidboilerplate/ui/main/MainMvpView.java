@@ -8,9 +8,9 @@ import ca.co.rufus.androidboilerplate.ui.base.MvpView;
 
 public interface MainMvpView extends MvpView {
 
-    void showRibots(List<RepoOwnerJoin> repositories);
+    void showRepos(List<RepoOwnerJoin> repositories);
 
-    void showRibotsEmpty();
+    void showReposEmpty();
 
     void showError(String errorMessage);
 
